@@ -1,14 +1,15 @@
 package com.demo.weather.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.demo.weather.model.apidata.City
 import com.demo.weather.model.repository.QueryCityRepo
 import com.demo.weather.model.repository.RecentCityRepo
 import com.demo.weather.model.util.OpenrationListener
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,8 @@ constructor(
 ): ViewModel() {
 
     private val TAG = HomeScreenViewModel::class.java.simpleName
-    val cities: MutableLiveData<List<City>> = MutableLiveData<List<City>>().apply { value = emptyList() }
+    private val _cities: MutableLiveData<List<City>> = MutableLiveData<List<City>>().apply { value = emptyList() }
+    val cities: LiveData<List<City>> = _cities
 
     init {
         Log.d(TAG, "Injection discovered")
@@ -31,7 +33,7 @@ constructor(
     }
 
     fun clearCityList() {
-        cities.value = emptyList()
+        _cities.value = emptyList()
     }
 
     fun loadCityList() {
@@ -59,8 +61,8 @@ constructor(
 
     private fun onOperationSucceed(obj: Any?) {
         if (obj != null && obj is List<*>) {
-            GlobalScope.launch(Dispatchers.Main) {
-                cities.value = obj as List<City>
+            viewModelScope.launch(Dispatchers.Main) {
+                _cities.value = obj as List<City>
             }
         }
     }

@@ -17,17 +17,17 @@ class SPWeatherApplication : DaggerApplication() {
         super.onCreate()
         appComponent.inject(this)
         // Instantiate a FlutterEngine.
-        val flutterEngine = FlutterEngine(this);
+        val flutterEngine = FlutterEngine(this)
         // Configure an initial route.
         //flutterEngine.navigationChannel.setInitialRoute("/");
         // Start executing Dart code to pre-warm the FlutterEngine.
         flutterEngine.dartExecutor.executeDartEntrypoint(
             DartExecutor.DartEntrypoint.createDefault()
-        );
+        )
         // Cache the FlutterEngine to be used by FlutterActivity or FlutterFragment.
         FlutterEngineCache
             .getInstance()
-            .put(FLUTTER_ENGINE_ID, flutterEngine);
+            .put(FLUTTER_ENGINE_ID, flutterEngine)
     }
 
     override fun applicationInjector() = appComponent

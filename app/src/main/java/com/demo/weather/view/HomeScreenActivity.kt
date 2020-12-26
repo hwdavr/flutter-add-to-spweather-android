@@ -26,7 +26,6 @@ import com.demo.weather.view.customview.onTextChanged
 import com.demo.weather.viewmodel.HomeScreenViewModel
 import dagger.android.AndroidInjection
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -71,13 +70,13 @@ class HomeScreenActivity : AppCompatActivity() {
             .get(HomeScreenViewModel::class.java)
 
         viewModel.cities.observe(this, Observer<List<City>> {
-            Log.d(TAG, "List updated")
+            Log.d(TAG, "List updated: ${it.size}")
             adapter.updateData(it)
         })
     }
 
     private fun initUI() {
-        adapter = HomeScreenAdapter(viewModel.cities.value ?: emptyList())
+        adapter = HomeScreenAdapter()
         adapter.delegate = object : CityViewHolder.Delegate {
             override fun onItemClick(city: String, view: View) {
                 viewModel.insertCity(city)

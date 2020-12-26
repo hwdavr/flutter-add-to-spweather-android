@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.demo.weather.R
 import com.demo.weather.model.apidata.City
 
-class HomeScreenAdapter(private var cities: List<City>): RecyclerView.Adapter<CityViewHolder>() {
+class HomeScreenAdapter: RecyclerView.Adapter<CityViewHolder>() {
+    private var cities = arrayListOf<City>()
 
     var delegate: CityViewHolder.Delegate? = null
 
     fun updateData(data: List<City>) {
-        cities = data
+        cities.clear()
+        cities.addAll(data)
         notifyDataSetChanged()
     }
 

@@ -63,8 +63,8 @@ class HomeScreenViewModelTest {
         viewModel.loadCityList()
 
         delay(1_000)
-        assertTrue(viewModel.cities.value?.size ?: 0 > 0)
-        print("Get list size ${viewModel.cities.value?.size}")
+        assertTrue(viewModel._cities.value?.size ?: 0 > 0)
+        print("Get list size ${viewModel._cities.value?.size}")
     }
 
     @Test
@@ -82,7 +82,7 @@ class HomeScreenViewModelTest {
         viewModel.queryCityList("Test")
 
         delay(1_000)
-        assertTrue(viewModel.cities.value?.size ?: 0 > 0)
-        print("Get list size ${viewModel.cities.value?.size}")
+        assertTrue(viewModel._cities.value?.size ?: 0 > 0)
+        print("Get list size ${viewModel._cities.value?.size}")
     }
 }

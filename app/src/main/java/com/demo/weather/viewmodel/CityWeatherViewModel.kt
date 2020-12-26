@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.demo.weather.model.apidata.CurrentCondition
 import com.demo.weather.model.repository.CityWeatherRepo
 import com.demo.weather.model.util.OpenrationListener
@@ -39,7 +40,7 @@ constructor(
         cityLiveData.value = city
         repository.currentWeather(city, object : OpenrationListener {
             override fun onSuccess(obj: Any?) {
-                GlobalScope.launch(Dispatchers.Main) {
+                viewModelScope.launch(Dispatchers.Main) {
                     if (obj != null && obj is CurrentCondition) {
                         temperatureLiveData.value = obj.temp_C
                         weatherDescLiveData.value = obj.weatherDesc
@@ -53,7 +54,7 @@ constructor(
             }
 
             override fun onError(obj: Any?) {
-                GlobalScope.launch(Dispatchers.Main) {
+                viewModelScope.launch(Dispatchers.Main) {
                     loadingVisibility.value = View.GONE
                     weatherVisibility.value = View.VISIBLE
                 }
