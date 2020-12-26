@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'widgets/checkbox_listview.dart';
+import 'package:flutter_module/service/cities_service.dart';
+import 'widgets/checkable_city_listview.dart';
 import 'model/checkable_city.dart';
 
 void main() {
   _setupLogging();
   runApp(MyApp());
 }
+
 void _setupLogging() {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((rec) {
@@ -23,14 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Common Cities'),
     );
@@ -56,16 +51,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  List<CheckableCity> _cities = [
-    CheckableCity("Singapore"),
-    CheckableCity("Beijing"),
-    CheckableCity("Guangzhou"),
-  ];
+  List<CheckableCity> _cities = [];
 
   void _incrementCounter() {
-    final selectedCities = _cities.where((element) => element.isChecked).map((e) => e.city);
+    final selectedCities =
+        _cities.where((element) => element.isChecked).map((e) => e.city);
     print(selectedCities.toString());
 
     // if (Navigator.canPop(context)) {
@@ -89,7 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: CheckBoxInListView(_cities),
+      body: Provider(
+        create: (_) => CitiesService.create(),
+        dispose: (_, CitiesService service) => service.client.dispose(),
+        child: CheckableCityListView(_cities),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Add',
