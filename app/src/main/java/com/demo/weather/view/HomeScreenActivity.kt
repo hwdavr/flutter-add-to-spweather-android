@@ -3,18 +3,19 @@ package com.demo.weather.view
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.demo.weather.MainFlutterActivity
 import com.demo.weather.R
 import com.demo.weather.SPWeatherApplication.Companion.FLUTTER_ENGINE_ID
 import com.demo.weather.model.apidata.City
@@ -94,7 +95,7 @@ class HomeScreenActivity : AppCompatActivity() {
 
         fab_add.setOnClickListener {
             startActivity(
-                FlutterActivity
+                MainFlutterActivity
                     .withCachedEngine(FLUTTER_ENGINE_ID)
                     //.backgroundMode(FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                     .build(HomeScreenActivity@this)

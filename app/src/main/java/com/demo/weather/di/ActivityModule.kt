@@ -1,5 +1,6 @@
 package com.demo.weather.di
 
+import com.demo.weather.MainFlutterActivity
 import com.demo.weather.view.CityWeatherActivity
 import com.demo.weather.view.HomeScreenActivity
 import dagger.Module
@@ -15,4 +16,6 @@ abstract class ActivityModule {
     @ContributesAndroidInjector
     internal abstract fun contributeCityWeatherActivity(): CityWeatherActivity
 
+    @ContributesAndroidInjector
+    internal abstract fun contributeMainFlutterActivity(): MainFlutterActivity
 }

@@ -4,5 +4,5 @@ class CheckableCity {
   String city = "";
   bool isChecked;
 
-  CheckableCity(this.city, {this.isChecked = false});
+  CheckableCity(this.city, [this.isChecked = false]);
 }

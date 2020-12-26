@@ -48,9 +48,10 @@ class _CheckableCityListViewState extends State<CheckableCityListView> {
 
           final popular = snapshot.data.body;
           // Remove previous items, other hot reload will add all the items again
+          print('TestWidget: ${ModalRoute.of(context).isCurrent}');
           checkableCities.clear();
           popular.data.forEach((element) {
-            checkableCities.add(CheckableCity(element));
+            checkableCities.add(CheckableCity(element, false));
           });
           return _buildCityList(context, checkableCities);
         } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_module/service/cities_service.dart';
@@ -50,33 +51,90 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  static const platform = const MethodChannel('flutter_module/weather');
+  AppLifecycleState _notification;
   List<CheckableCity> _cities = [];
 
-  void _incrementCounter() {
-    final selectedCities =
-        _cities.where((element) => element.isChecked).map((e) => e.city);
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("app in $state");
+    if (state == AppLifecycleState.resumed) {
+      // Refresh UI when the engine is resumed
+      setState(() {});
+    }
+  }
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  Future<void> _notifyError(context, msg) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Oops'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('$msg'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _navigateBack() {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      SystemNavigator.pop();
+    }
+  }
+
+  Future<void> _setCityList(context, cities) async {
+    try {
+      await platform.invokeMethod('setCityList', cities);
+      _navigateBack();
+    } on PlatformException catch (e) {
+      _notifyError(context, e.message);
+    }
+  }
+
+  void _updateCityListToNative(context) {
+    final selectedCities = _cities
+        .where((element) => element.isChecked)
+        .map((e) => e.city)
+        .toList();
     print(selectedCities.toString());
 
-    // if (Navigator.canPop(context)) {
-    //   Navigator.pop(context);
-    // } else {
-    //   SystemNavigator.pop();
-    // }
+    _setCityList(context, selectedCities);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Provider(
@@ -85,10 +143,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: CheckableCityListView(_cities),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => _updateCityListToNative(context),
         tooltip: 'Add',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
