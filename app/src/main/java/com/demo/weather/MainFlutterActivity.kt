@@ -3,11 +3,8 @@ package com.demo.weather
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.NonNull
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.demo.weather.model.apidata.City
 import com.demo.weather.model.repository.RecentCityRepo
-import com.demo.weather.viewmodel.HomeScreenViewModel
 import dagger.android.AndroidInjection
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

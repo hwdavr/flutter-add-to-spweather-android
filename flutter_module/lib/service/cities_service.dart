@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:flutter_module/model/cities.dart';
 import 'package:flutter_module/service/model_converter.dart';
+import 'package:flutter_module/utils/constants.dart';
 
 part 'cities_service.chopper.dart';
 
@@ -11,7 +12,7 @@ abstract class CitiesService extends ChopperService {
 
   static CitiesService create() {
     final client = ChopperClient(
-      baseUrl: 'https://spweather-json-server.herokuapp.com/',
+      baseUrl: SERVER_URL,
       interceptors: [HttpLoggingInterceptor()],
       converter: ModelConverter(
           {PopularCities: (json) => PopularCities.fromJson(json)}),

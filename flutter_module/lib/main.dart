@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         // This is the theme of your application.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Common Cities'),
+      home: MyHomePage(title: 'Polular Cities'),
     );
   }
 }

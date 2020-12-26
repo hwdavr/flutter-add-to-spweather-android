@@ -26,7 +26,6 @@ import com.demo.weather.view.customview.debounce
 import com.demo.weather.view.customview.onTextChanged
 import com.demo.weather.viewmodel.HomeScreenViewModel
 import dagger.android.AndroidInjection
-import io.flutter.embedding.android.FlutterActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
